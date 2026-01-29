@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound of Smiles | Aliso Niguel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sunshine: #FFD93D;
+            --coral: #FF8B7B;
+            --blush: #FFB5C2;
+            --peach: #FFEAA7;
+            --cream: #FFF9F0;
+            --warm-gray: #6B5B5B;
+            --soft-shadow: rgba(255, 139, 123, 0.2);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            min-height: 100vh;
+            color: var(--warm-gray);
+        }
+
+        /* Header / Navigation */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--peach) 0%, var(--cream) 100%);
+            box-shadow: 0 2px 20px var(--soft-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 15px var(--soft-shadow);
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--coral), #E17055);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--warm-gray);
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sunshine), var(--coral));
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: var(--coral);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 3rem;
+            text-align: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('banner1.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--sunshine) 0%, var(--coral) 50%, var(--blush) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+            color: #8B7B7B;
+        }
+
+        .hero-banner {
+            display: none;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--sunshine), var(--coral));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 8px 25px var(--soft-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 139, 123, 0.35);
+        }
+
+        /* Main Content */
+        main {
+            padding: 4rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--warm-gray);
+        }
+
+        .section-title span {
+            background: linear-gradient(135deg, var(--coral), var(--blush));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(107, 91, 91, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 181, 194, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px var(--soft-shadow);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--peach), var(--blush));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--warm-gray);
+        }
+
+        .card p {
+            line-height: 1.7;
+            color: #9B8B8B;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--warm-gray), #5B4B4B);
+            color: var(--cream);
+            padding: 3rem;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.9;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background 0.3s ease, transform 0.3s ease;
+            color: var(--cream);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(135deg, var(--sunshine), var(--coral));
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            main {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="logo.png" alt="Sound of Smiles Logo" class="logo">
+                <span class="brand-name">Sound of Smiles</span>
+            </a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="join.html">Join Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Spreading Joy Through Music</h1>
+        <p>Sound of Smiles is a service-based music club at Aliso Niguel High School dedicated to bringing happiness to our community through live music performances.</p>
+        <img src="Banner2.PNG" alt="Sound of Smiles Banner" class="hero-banner">
+        <a href="join.html" class="cta-button">Get Involved ♪</a>
+    </section>
+
+    <main>
+        <h2 class="section-title">What We <span>Do</span></h2>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🎵</div>
+                <h3>Community Performances</h3>
+                <p>We bring live music to nursing homes, hospitals, and community centers to brighten everyone's day.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎶</div>
+                <h3>Building Connections</h3>
+                <p>Club members are able to form lasting friendships through shared musical experiences.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💛</div>
+                <h3>Service Projects</h3>
+                <p>Organizing fundraisers and events that combine our passion for music with giving back to those in need.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p> Sound of Smiles | Aliso Niguel High School</p>
+        <div class="social-links">
+
+</div>
+        </div>
+    </footer>
+</body>
+</html>

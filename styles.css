@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FDF36E; /* Light yellow background */
+}
+
+header {
+    background: #FABD52; /* Soft orange background for header */
+    color: #35424a; /* Dark text color for contrast */
+    padding: 20px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #F5927B; /* Light pink for section headings */
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #EE889E; /* Soft pink for footer */
+    color: white; /* White text for contrast */
+}
+
+/* Additional styles for links */
+a {
+    color: #35424a; /* Dark color for links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
