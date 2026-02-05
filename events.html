@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events | Sound of Smiles</title>
-    <link rel="icon" type="image/png" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,12 +29,15 @@
         .event-card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 40px rgba(107, 91, 91, 0.08); border: 1px solid rgba(255, 181, 194, 0.2); margin-bottom: 1.5rem; display: flex; gap: 1.5rem; transition: transform 0.3s ease; }
         .event-card:hover { transform: translateY(-5px); }
         .event-date { background: linear-gradient(135deg, var(--sunshine), var(--coral)); border-radius: 15px; padding: 1rem; text-align: center; min-width: 80px; color: white; }
+        .event-date.past { background: linear-gradient(135deg, #C8C0BA, #A89F99); }
         .event-date .month { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
         .event-date .day { font-size: 2rem; font-weight: 700; line-height: 1; }
         .event-details h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--warm-gray); }
         .event-details .time { color: var(--coral); font-weight: 600; margin-bottom: 0.5rem; }
         .event-details p { line-height: 1.6; color: #8B7B7B; }
         .section-label { font-size: 1.2rem; color: var(--coral); margin: 2.5rem 0 1.5rem; font-weight: 600; }
+        .divider { border: none; border-top: 2px solid rgba(255, 181, 194, 0.3); margin: 3rem 0; }
+        .empty-message { text-align: center; color: #A89F99; font-style: italic; padding: 2rem 0; }
         footer { background: linear-gradient(135deg, var(--warm-gray), #5B4B4B); color: var(--cream); padding: 3rem; text-align: center; }
         footer p { opacity: 0.9; }
         .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
@@ -66,29 +68,95 @@
 
     <main>
         <h1 class="page-title">Upcoming Events</h1>
-        
-        <div class="event-card">
-            <div class="event-date">
-                <div class="month">Jan</div>
-                <div class="day">30</div>
+        <div id="upcoming-events">
+            <!-- Events go here — just add data-date="YYYY-MM-DD" and the script handles the rest! -->
+
+            <div class="event-card" data-date="2026-01-30">
+                <div class="event-date">
+                    <div class="month">Jan</div>
+                    <div class="day">30</div>
+                </div>
+                <div class="event-details">
+                    <h3>Club Rush!</h3>
+                    <div class="time">During Lunch</div>
+                    <p>Sound of Smiles will be at Club Rush on January 30! We are a club that offers musical volunteering opportunities performing at local retirement homes and community center! If you sing or play an instrument, this is a great place to earn your hours.</p>
+                </div>
             </div>
-            <div class="event-details">
-                <h3>Club Rush!</h3>
-                <div class="time">During Lunch</div>
-                <p>Sound of Smiles will be at Club Rush on January 30! We are a club that offers musical volunteering opportunities performing at local retirement homes and community center! If you sing or play an instrument, this is a great place to earn your hours.</p>
+             <div class="event-card" data-date="2026-02-05">
+                <div class="event-date">
+                    <div class="month">Feb</div>
+                    <div class="day">05</div>
+                </div>
+                <div class="event-details">
+                    <h3>Club Interest Meeting</h3>
+                    <div class="time">During Lunch</div>
+                    <p>We will have our first club interest meeting on Thursday, February 5th. It will be in the Band Room (Room 1005) located by the freshman lunch area. Come learn more about our club and what we do!</p>
+                </div>
             </div>
+
+            <!-- COPY THIS TEMPLATE TO ADD NEW EVENTS:
+            <div class="event-card" data-date="YYYY-MM-DD">
+                <div class="event-date">
+                    <div class="month">Mon</div>
+                    <div class="day">00</div>
+                </div>
+                <div class="event-details">
+                    <h3>Event Title</h3>
+                    <div class="time">Time</div>
+                    <p>Event description goes here.</p>
+                </div>
+            </div>
+            -->
+            <p class="section-label">More events coming soon!</p>
         </div>
 
-   
+        <hr class="divider">
 
-      
-        <p class="section-label">More events coming soon!</p>
+        <h2 class="page-title">Past Events</h2>
+        <div id="past-events"></div>
     </main>
 
     <footer>
         <p> Sound of Smiles | Aliso Niguel High School</p>
-
-        </div>
     </footer>
+
+    <script>
+        // Automatically sorts events into Upcoming or Past based on today's date
+        function sortEvents() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const upcomingContainer = document.getElementById('upcoming-events');
+            const pastContainer = document.getElementById('past-events');
+            const allEvents = document.querySelectorAll('.event-card[data-date]');
+
+            allEvents.forEach(card => {
+                const eventDate = new Date(card.getAttribute('data-date') + 'T00:00:00');
+
+                if (eventDate < today) {
+                    // Move to past events and gray out the date badge
+                    card.querySelector('.event-date').classList.add('past');
+                    pastContainer.appendChild(card);
+                } else {
+                    // Keep in upcoming
+                    card.querySelector('.event-date').classList.remove('past');
+                    upcomingContainer.appendChild(card);
+                }
+            });
+
+            // Show message if no upcoming events
+            if (upcomingContainer.querySelectorAll('.event-card').length === 0) {
+                upcomingContainer.innerHTML = '<p class="empty-message"><p class="section-label">More events coming soon!</p>';
+            }
+
+            // Show message if no past events
+            if (pastContainer.querySelectorAll('.event-card').length === 0) {
+                pastContainer.innerHTML = '<p class="empty-message">No past events yet!</p>';
+            }
+        }
+
+        // Run when page loads
+        sortEvents();
+    </script>
 </body>
 </html>
