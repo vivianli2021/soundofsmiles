@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery | Sound of Smiles</title>
-    <link rel="icon" type="image/png" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -31,11 +31,13 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         .gallery-item { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(107, 91, 91, 0.1); cursor: pointer; aspect-ratio: 1; background: linear-gradient(135deg, var(--peach), var(--blush)); }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .gallery-item .gallery-image { width: 100%; height: 100%; }
         .gallery-item:hover img { transform: scale(1.08); }
         .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(transparent, rgba(107, 91, 91, 0.85)); color: white; transform: translateY(100%); transition: transform 0.3s ease; }
         .gallery-item:hover .gallery-overlay { transform: translateY(0); }
         .gallery-overlay h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
         .gallery-overlay p { font-size: 0.85rem; opacity: 0.9; }
+        .gallery-overlay .gallery-date { font-size: 0.7rem; opacity: 0.8; }
 
         /* Placeholder styling */
         .placeholder-img { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 3rem; }
@@ -52,11 +54,14 @@
         .lightbox-caption h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
         .lightbox-caption p { opacity: 0.8; }
 
-        footer { background: linear-gradient(135deg, var(--warm-gray), #5B4B4B); color: var(--cream); padding: 3rem; text-align: center; margin-top: 3rem; }
+        footer { background: linear-gradient(135deg, var(--warm-gray), #5B4B4B); color: var(--cream); padding: 3rem; text-align: center; margin-top: 3rem; position: relative; }
         footer p { opacity: 0.9; }
         .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
         .social-links a { width: 45px; height: 45px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; transition: background 0.3s ease, transform 0.3s ease; }
         .social-links a:hover { background: linear-gradient(135deg, var(--sunshine), var(--coral)); transform: scale(1.1); }
+        .admin-login { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--coral), var(--blush)); color: white; text-decoration: none; font-size: 0.78rem; font-weight: 600; padding: 0.45rem 0.9rem; border-radius: 999px; box-shadow: 0 6px 18px rgba(107, 91, 91, 0.18); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .admin-login:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(255, 139, 123, 0.3); }
+        .footer-actions { position: absolute; right: 3rem; top: 50%; transform: translateY(-50%); }
         @media (max-width: 768px) { header { padding: 1rem 1.5rem; flex-direction: column; gap: 1rem; } nav ul { gap: 1.5rem; flex-wrap: wrap; justify-content: center; } main { padding: 2rem 1.5rem; } .page-title { font-size: 2rem; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; } }
     </style>
 </head>
@@ -81,58 +86,7 @@
     <main>
         <h1 class="page-title">Photo Gallery</h1>
         <p class="subtitle">Memories and moments</p>
-
-        <div class="gallery-grid">
-            <!-- Replace placeholder divs with actual images -->
-            <!-- Example: <img src="your-image.jpg" alt="Description"> -->
-                                  <div class="gallery-item">
-                <div class="ClubMeeting1"><img src="ClubMeeting1.jpg" alt="Club Interest Meeting"><span> </span></div>
-                <div class="gallery-overlay">
-                    <h3>Club Interest Meeting!!</h3>
-                    <p>02/05/2026</p>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <div class="ClubMeeting2"><img src="ClubMeeting2.jpg" alt="Club Interest Meeting"><span> </span></div>
-                <div class="gallery-overlay">
-                    <h3>Club Interest Meeting!!</h3>
-                    <p>02/05/2026</p>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <div class="ClubMeeting3"><img src="ClubMeeting3.jpg" alt="Club Interest Meeting"><span> </span></div>
-                <div class="gallery-overlay">
-                    <h3>Club Interest Meeting!!</h3>
-                    <p>02/05/2026</p>
-                </div>
-            </div>           
-
-         <div class="gallery-item">
-                <div class="ClubRush1"><img src="ClubRush1.jpg" alt="Club Rush Event"><span> </span></div>
-                <div class="gallery-overlay">
-                    <h3>Club Rush!</h3>
-                    <p>01/30/2026</p>
-                </div>
-            </div>
-
-            <div class="gallery-item">
-                <div class="ClubRush2"><img src="ClubRush2.jpg" alt="Club Rush Event"><span> </span></div>
-                <div class="gallery-overlay">
-                    <h3>Club Rush!</h3>
-                    <p>01/30/2026</p>
-                </div>
-            </div>
-
-            <div class="gallery-item">
-                <div class="ClubRush3"><img src="ClubRush3.jpg" alt="Club Rush Event"><span> </span></div>
-                <div class="gallery-overlay">
-                    <h3>Club Rush!</h3>
-                    <p>01/30/2026</p>
-                </div>
-            </div>
-
- 
-        </div>
+        <div class="gallery-grid"></div>
     </main>
 
     <!-- Lightbox for viewing full images -->
@@ -149,10 +103,65 @@
 
     <footer>
         <p>Sound of Smiles | Aliso Niguel High School</p>
-     
+        <div class="footer-actions">
+            <a class="admin-login" href="login.html" aria-label="Admin login">Admin Login</a>
+        </div>
+    
     </footer>
+<script>
+    const supabaseUrl = 'https://zylxzefhjqcnbjxiquad.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHh6ZWZoanFjbmJqeGlxdWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0OTUwMjksImV4cCI6MjA4NjA3MTAyOX0.SETNMm4NpvoOvnMy9kDuSfZHdsEoANe-lt8UkIUtSu8';
+    const sb = supabase.createClient(supabaseUrl, supabaseKey);
 
-    <script>
+    async function loadGallery() {
+        let { data, error } = await sb
+            .from('photos')
+            .select('url, caption, created_at, photo_date')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            const fallback = await sb
+                .from('photos')
+                .select('url, caption, created_at')
+                .order('created_at', { ascending: false });
+            data = fallback.data;
+            error = fallback.error;
+        }
+
+        if (error) {
+            console.error('Error loading photos:', error);
+            return;
+        }
+
+        const galleryGrid = document.querySelector('.gallery-grid');
+        galleryGrid.innerHTML = '';
+
+        (data || []).forEach((photo) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.classList.add('gallery-item');
+            const dateValue = photo.photo_date || photo.created_at;
+            const dateText = dateValue ? fmtDate(dateValue) : '';
+            galleryItem.innerHTML = `
+                <div class="gallery-image"><img src="${photo.url}" alt="${photo.caption || ''}"></div>
+                <div class="gallery-overlay">
+                    <h3>${photo.caption || ''}</h3>
+                    ${dateText ? `<div class="gallery-date">${dateText}</div>` : ''}
+                </div>
+            `;
+            galleryGrid.appendChild(galleryItem);
+        });
+    }
+
+    function fmtDate(iso) {
+        if (!iso) return '';
+        const d = new Date(iso);
+        return `${d.getMonth()+1}/${d.getDate()}/${String(d.getFullYear()).slice(2)}`;
+    }
+
+    loadGallery();
+</script>
+        <script>
+        
         // Lightbox functionality (for when you add real images)
         function openLightbox(imgSrc, title, desc) {
             document.getElementById('lightbox-img').src = imgSrc;
