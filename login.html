@@ -30,20 +30,20 @@
       --border:  rgba(255, 181, 194, 0.35);
     }
 
-    html, body {
-      height: 100%;
+    /* FIX 1: html+body fill full height so footer sticks to bottom, no gap */
+    html, body { height: 100%; }
+
+    body {
       font-family: 'Quicksand', sans-serif;
       background: var(--bg);
       color: var(--text);
-    }
-
-    body {
-      min-height: 100vh;
-      position: relative;
-      overflow: hidden;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -121,74 +121,16 @@
       width: 100%;
     }
 
+    /* FIX 2: main grows to fill space between header and footer */
     main {
-      min-height: calc(100vh - 320px);
+      flex: 1;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
       padding: 2.5rem 1.5rem 3.5rem;
       position: relative;
       z-index: 1;
-    }
-
-    /* ── Ambient background ── */
-    .ambient {
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.55;
-    }
-
-    .orb-1 {
-      width: 620px; height: 620px;
-      background: radial-gradient(circle, rgba(200,135,63,0.22), transparent 70%);
-      top: -180px; right: -160px;
-      animation: drift1 18s ease-in-out infinite alternate;
-    }
-
-    .orb-2 {
-      width: 480px; height: 480px;
-      background: radial-gradient(circle, rgba(201,104,90,0.14), transparent 70%);
-      bottom: -120px; left: -100px;
-      animation: drift2 22s ease-in-out infinite alternate;
-    }
-
-    .orb-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(200,135,63,0.1), transparent 70%);
-      top: 40%; left: 30%;
-      animation: drift3 15s ease-in-out infinite alternate;
-    }
-
-    @keyframes drift1 { to { transform: translate(-40px, 30px); } }
-    @keyframes drift2 { to { transform: translate(30px, -40px); } }
-    @keyframes drift3 { to { transform: translate(-20px, 20px); } }
-
-    /* ── Floating music notes ── */
-    .notes-layer {
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none; overflow: hidden;
-    }
-
-    .fn {
-      position: absolute;
-      color: var(--gold);
-      opacity: 0;
-      font-size: 1.4rem;
-      animation: floatUp linear infinite;
-      user-select: none;
-    }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(110vh) rotate(-10deg); opacity: 0; }
-      8%   { opacity: 0.07; }
-      92%  { opacity: 0.07; }
-      100% { transform: translateY(-80px) rotate(15deg); opacity: 0; }
     }
 
     /* ── Card ── */
@@ -216,19 +158,6 @@
     .brand {
       text-align: center;
       margin-bottom: 48px;
-    }
-
-    .brand-icon {
-      width: 76px; height: 76px;
-      background: linear-gradient(145deg, var(--gold), #d4924a);
-      border-radius: 22px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem;
-      margin: 0 auto 20px;
-      box-shadow:
-        0 8px 28px rgba(200,135,63,0.38),
-        0 2px 0 rgba(255,255,255,0.3) inset;
-      animation: cardIn 0.7s 0.1s cubic-bezier(0.16,1,0.3,1) both;
     }
 
     .brand h1 {
@@ -294,7 +223,7 @@
       border: 1.5px solid var(--border);
       border-radius: 13px;
       background: var(--warm);
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Quicksand', sans-serif;
       font-size: 0.95rem;
       color: var(--text);
       outline: none;
@@ -306,7 +235,7 @@
     .field input:focus {
       border-color: var(--gold);
       background: #fff;
-      box-shadow: 0 0 0 4px rgba(200,135,63,0.1);
+      box-shadow: 0 0 0 4px rgba(255,139,123,0.1);
     }
 
     /* ── Submit ── */
@@ -318,19 +247,19 @@
     .submit-btn {
       width: 100%;
       padding: 15px;
-      background: linear-gradient(135deg, var(--gold) 0%, #d4924a 100%);
+      background: linear-gradient(135deg, var(--coral) 0%, var(--blush) 100%);
       color: white;
       border: none;
       border-radius: 13px;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Quicksand', sans-serif;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.02em;
       position: relative;
       overflow: hidden;
       transition: opacity 0.2s, transform 0.18s, box-shadow 0.2s;
-      box-shadow: 0 5px 20px rgba(200,135,63,0.38);
+      box-shadow: 0 5px 20px rgba(255,139,123,0.38);
     }
 
     .submit-btn::before {
@@ -344,7 +273,7 @@
     .submit-btn:hover:not(:disabled) {
       opacity: 0.92;
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(200,135,63,0.48);
+      box-shadow: 0 8px 28px rgba(255,139,123,0.48);
     }
 
     .submit-btn:active:not(:disabled) { transform: translateY(0); }
@@ -376,7 +305,6 @@
       80%       { transform: translateX(4px); }
     }
 
-    /* ── Loading spinner ── */
     .spinner {
       width: 16px; height: 16px;
       border: 2.5px solid rgba(255,255,255,0.4);
@@ -388,7 +316,6 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Footer link ── */
     .back-link {
       text-align: center;
       margin-top: 24px;
@@ -404,7 +331,9 @@
 
     .back-link a:hover { color: var(--gold); }
 
+    /* FIX 3: footer flex-shrink so it never leaves a gap */
     footer {
+      flex-shrink: 0;
       background: linear-gradient(135deg, var(--warm-gray), #5B4B4B);
       color: var(--cream);
       padding: 3rem;
@@ -477,26 +406,17 @@
     </nav>
   </header>
 
-  <div class="ambient">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-
-  <div class="notes-layer" id="notes-layer"></div>
-
   <main>
     <div class="card">
       <div class="brand">
-        <div class="brand-icon">🎵</div>
         <h1>Sound of Smiles</h1>
-        <div class="brand-sub">⚙ Admin Portal</div>
+        <div class="brand-sub">Admin Portal</div>
       </div>
 
       <div class="field">
         <label>Email Address</label>
         <div class="input-wrap">
-          <span class="input-icon">✉</span>
+          <span class="input-icon" style="color:var(--coral)">✉</span>
           <input type="email" id="email" placeholder="admin@soundofsmiles.org" autocomplete="email"/>
         </div>
       </div>
@@ -504,16 +424,14 @@
       <div class="field">
         <label>Password</label>
         <div class="input-wrap">
-          <span class="input-icon">🔒</span>
+          <span class="input-icon" style="color:var(--coral)">🔒</span>
           <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
         </div>
       </div>
 
       <div class="submit-wrap">
         <button class="submit-btn" id="signin-btn" onclick="signIn()">
-          <div class="btn-inner" id="btn-inner">
-            Sign In
-          </div>
+          <div class="btn-inner" id="btn-inner">Sign In</div>
         </button>
         <div class="error-box" id="error-box"></div>
       </div>
@@ -525,69 +443,51 @@
   </main>
 
   <footer>
-    <p> Sound of Smiles | Aliso Niguel High School</p>
+    <p>Sound of Smiles | Aliso Niguel High School</p>
     <div class="footer-actions">
       <a class="admin-login" href="login.html" aria-label="Admin login">Admin Login</a>
     </div>
   </footer>
 
-<script>
-  // ── CONFIG ── replace with your values
-  const SUPABASE_URL  = 'https://zylxzefhjqcnbjxiquad.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHh6ZWZoanFjbmJqeGlxdWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0OTUwMjksImV4cCI6MjA4NjA3MTAyOX0.SETNMm4NpvoOvnMy9kDuSfZHdsEoANe-lt8UkIUtSu8';
+  <script>
+    const SUPABASE_URL  = 'https://zylxzefhjqcnbjxiquad.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bHh6ZWZoanFjbmJqeGlxdWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0OTUwMjksImV4cCI6MjA4NjA3MTAyOX0.SETNMm4NpvoOvnMy9kDuSfZHdsEoANe-lt8UkIUtSu8';
 
-  const { createClient } = supabase;
-  const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-  // If already logged in, go straight to dashboard
-  (async () => {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session) window.location.href = 'dashboard.html';
-  })();
+    (async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) window.location.href = 'dashboard.html';
+    })();
 
-  // Floating music notes
-  const noteSymbols = ['♩','♪','♫','♬','𝄞'];
-  const layer = document.getElementById('notes-layer');
-  for (let i = 0; i < 18; i++) {
-    const el = document.createElement('span');
-    el.className = 'fn';
-    el.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
-    el.style.cssText = `
-      left: ${Math.random() * 100}%;
-      font-size: ${1 + Math.random() * 1.2}rem;
-      animation-duration: ${10 + Math.random() * 14}s;
-      animation-delay: ${-Math.random() * 20}s;
-    `;
-    layer.appendChild(el);
-  }
+    async function signIn() {
+      const email = document.getElementById('email').value.trim();
+      const pass  = document.getElementById('password').value;
+      const btn   = document.getElementById('signin-btn');
+      const inner = document.getElementById('btn-inner');
+      const err   = document.getElementById('error-box');
 
-  async function signIn() {
-    const email = document.getElementById('email').value.trim();
-    const pass  = document.getElementById('password').value;
-    const btn   = document.getElementById('signin-btn');
-    const inner = document.getElementById('btn-inner');
-    const err   = document.getElementById('error-box');
+      err.style.display = 'none';
+      btn.disabled = true;
+      inner.innerHTML = '<div class="spinner"></div> Signing in…';
 
-    err.style.display = 'none';
-    btn.disabled = true;
-    inner.innerHTML = '<div class="spinner"></div> Signing in…';
+      const { error } = await sb.auth.signInWithPassword({ email, password: pass });
 
-    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-
-    if (error) {
-      err.textContent = error.message;
-      err.style.display = 'block';
-      btn.disabled = false;
-      inner.textContent = 'Sign In';
-    } else {
-      inner.innerHTML = '✓ Redirecting…';
-      setTimeout(() => window.location.href = 'dashboard.html', 400);
+      if (error) {
+        err.textContent = error.message;
+        err.style.display = 'block';
+        btn.disabled = false;
+        inner.textContent = 'Sign In';
+      } else {
+        inner.innerHTML = '✓ Redirecting…';
+        setTimeout(() => window.location.href = 'dashboard.html', 400);
+      }
     }
-  }
 
-  document.getElementById('password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') signIn();
-  });
-</script>
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') signIn();
+    });
+  </script>
 </body>
 </html>
