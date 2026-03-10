@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sound of Smiles | Aliso Niguel</title>
-    <link rel="icon" type="image/png" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -237,6 +236,7 @@
             color: var(--cream);
             padding: 3rem;
             text-align: center;
+            position: relative;
         }
 
         footer p {
@@ -267,6 +267,33 @@
         .social-links a:hover {
             background: linear-gradient(135deg, var(--sunshine), var(--coral));
             transform: scale(1.1);
+        }
+
+        .admin-login {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--coral), var(--blush));
+            color: white;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(107, 91, 91, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .admin-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(255, 139, 123, 0.3);
+        }
+
+        .footer-actions {
+            position: absolute;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         /* Mobile Responsive */
@@ -307,7 +334,7 @@
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="events.html">Events</a></li>
+                <li><a href="#events">Events</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="join.html">Join Us</a></li>
                 <li><a href="#contact">Contact</a></li>
