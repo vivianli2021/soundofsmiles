@@ -113,41 +113,7 @@
         const { createClient } = supabase;
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-        // ── Hardcoded events (your existing ones) ──
-        // These will be merged with anything added via the admin dashboard.
-        const HARDCODED = [
-            {
-                date: '2026-01-30',
-                name: 'Club Rush!',
-                time: 'During Lunch',
-                notes: 'Sound of Smiles will be at Club Rush on January 30! We are a club that offers musical volunteering opportunities performing at local retirement homes and community centers! If you sing or play an instrument, this is a great place to earn your hours.'
-            },
-            {
-                date: '2026-02-05',
-                name: 'Club Interest Meeting',
-                time: 'During Lunch',
-                notes: 'We will have our first club interest meeting on Thursday, February 5th. It will be in the Band Room (Room 1005) located by the freshman lunch area. Come learn more about our club and what we do!'
-            },
-            {
-                date: '2026-02-12',
-                name: 'Performance Practice',
-                time: 'During Lunch',
-                notes: 'Members will be practicing during the entirety of lunch on February 12th in the Band Room (Room 1005) to prepare for the upcoming performance on February 22. This meeting is mandatory for those part of the performance team, but optional for other members. Everyone is welcome to come and practice their songs!'
-            },
-            {
-                date: '2026-02-19',
-                name: 'Performance Practice',
-                time: 'During Lunch',
-                notes: 'Members will be practicing during the entirety of lunch on February 19th in the Band Room (Room 1005) to prepare for the upcoming performance on February 22. This meeting is mandatory for those part of the performance team, but optional for other members. Everyone is welcome to come and practice their songs!'
-            },
-            {
-                date: '2026-02-22',
-                name: 'Heritage Pointe Performance',
-                time: '2:00 PM – 3:00 PM',
-                notes: 'Sound of Smiles will be performing at Heritage Pointe on February 22nd! Heritage Pointe is a senior center in Mission Viejo. The performance team must arrive at least twenty minutes before the performance starts. Make sure to wear nice clothes if you are performing!'
-            },
-        ];
-
+     
         // ── Helpers ──
         const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
