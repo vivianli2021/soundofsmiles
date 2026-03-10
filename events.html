@@ -113,7 +113,7 @@
         const { createClient } = supabase;
         const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
-     
+    
         // ── Helpers ──
         const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -167,10 +167,8 @@
                 console.warn('Could not load events from database:', e);
             }
 
-            // Merge: use date string as a simple dedup key
-            const dbDates = new Set(dbEvents.map(e => e.date + '|' + e.name));
-            const hardcodedFiltered = HARDCODED.filter(e => !dbDates.has(e.date + '|' + e.name));
-            const all = [...hardcodedFiltered, ...dbEvents];
+            // Use only dbEvents now (no hardcoded events)
+            const all = [...dbEvents];
 
             // Sort by date ascending
             all.sort((a, b) => new Date(a.date) - new Date(b.date));
