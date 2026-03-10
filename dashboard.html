@@ -124,13 +124,25 @@
 
     /* ── Topbar inside app ── */
     .topbar {
-      background: var(--surface); border-bottom: 1px solid var(--border);
-      height: 60px; padding: 0 36px;
-      display: flex; align-items: center; justify-content: space-between;
-      box-shadow: 0 8px 24px rgba(107,91,91,0.06);
+      background: transparent;
+      border-bottom: none;
+      height: 60px;
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+      margin-top: 40px;
+      position: relative;
     }
 
-    .topbar-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text); }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--text);
+      text-align: center;
+      flex: none;
+    }
 
     .user-row {
       display: flex; align-items: center; gap: 10px;
@@ -148,30 +160,35 @@
     .u-role { font-size: 0.62rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
 
     .signout-btn {
-      background: linear-gradient(135deg, var(--sunshine), var(--coral));
+      background: none;
       border: none;
-      color: white;
+      color: var(--coral);
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      padding: 8px 18px;
-      border-radius: 999px;
+      padding: 0 0 0 24px;
+      border-radius: 0;
       letter-spacing: 0.02em;
-      transition: transform 0.18s, box-shadow 0.18s;
-      box-shadow: 0 10px 22px rgba(255,139,123,0.28);
+      box-shadow: none;
+      transition: color 0.18s;
     }
-    .signout-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(255,139,123,0.38); }
+    .signout-btn:hover {
+      color: var(--rose);
+      text-decoration: underline;
+      box-shadow: none;
+      transform: none;
+    }
 
     /* ── Panels ── */
     .panel { display: none; padding: 36px; animation: fadeUp 0.3s ease both; }
     .panel.active { display: block; }
 
     .panel-shell {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding: 24px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 24px 0;
     }
 
     .panel-head {
@@ -456,7 +473,7 @@
   <!-- Topbar -->
   <div class="topbar">
     <div class="topbar-title">Admin Dashboard</div>
-    <button class="signout-btn" onclick="signOut()" title="Sign out">Sign Out</button>
+    <button class="signout-btn" onclick="signOut()" title="Sign out" style="position:absolute;top:0;right:0;margin:12px 36px 0 0;">Sign Out</button>
   </div>
 
   <div class="stat-row">
@@ -792,6 +809,11 @@
       const upcoming = d >= new Date();
       const r = document.createElement('div');
       r.className = 'er'; r.style.animationDelay = `${i * 0.05}s`;
+      // Use the time as plain text if it doesn't match HH:MM, otherwise format
+      let timeDisplay = '';
+      if (ev.time) {
+        timeDisplay = /^\d{1,2}:\d{2}$/.test(ev.time) ? fmtTime(ev.time) : ev.time;
+      }
       r.innerHTML = `
         <div class="edb">
           <div class="edb-mo">${d.toLocaleString('en', { month: 'short' }).toUpperCase()}</div>
@@ -800,9 +822,9 @@
         <div class="ei-info">
           <div class="ei-name">${ev.name}</div>
           <div class="ei-det">
-            ${ev.location ? `<span>📍 ${ev.location}</span>` : ''}
-            ${ev.time     ? `<span>🕐 ${fmtTime(ev.time)}</span>` : ''}
-            ${ev.notes    ? `<span>📝 ${ev.notes.slice(0, 55)}${ev.notes.length > 55 ? '…' : ''}</span>` : ''}
+            ${ev.location ? `<span>${ev.location}</span>` : ''}
+            ${timeDisplay ? `<span>${timeDisplay}</span>` : ''}
+            ${ev.notes    ? `<span>${ev.notes.slice(0, 55)}${ev.notes.length > 55 ? '…' : ''}</span>` : ''}
           </div>
         </div>
         <span class="ev-badge ${upcoming ? 'upcoming' : 'past'}">${upcoming ? 'Upcoming' : 'Past'}</span>
@@ -813,7 +835,10 @@
   }
 
   function fmtTime(t) {
-    const [h, m] = t.split(':'); const hr = parseInt(h);
+    if (!/^\d{1,2}:\d{2}$/.test(t)) return t;
+    const [h, m] = t.split(':');
+    if (isNaN(h) || isNaN(m)) return t;
+    const hr = parseInt(h);
     return `${hr > 12 ? hr - 12 : hr || 12}:${m} ${hr >= 12 ? 'PM' : 'AM'}`;
   }
 
