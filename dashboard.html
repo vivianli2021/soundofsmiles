@@ -698,7 +698,7 @@
       }
       const { data: ud } = sb.storage.from(BUCKET).getPublicUrl(name);
       const insertData = { url: ud.publicUrl, caption: item.caption || null };
-      if (hasPhotoDateColumn && item.date) insertData.photo_date = item.date;
+      if (item.date) insertData.created_at = new Date(item.date + 'T12:00:00').toISOString();
       await sb.from('photos').insert(insertData);
       done++;
       pf.style.width = `${done/total*100}%`;
