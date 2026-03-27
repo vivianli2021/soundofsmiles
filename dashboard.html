@@ -212,6 +212,7 @@
   <div class="stat-row">
     <div class="stat"><div class="stat-n" id="s-events">–</div><div class="stat-l">Events</div></div>
     <div class="stat"><div class="stat-n" id="s-photos">–</div><div class="stat-l">Photos</div></div>
+    <div class="stat"><div class="stat-n" id="s-announcements">–</div><div class="stat-l">Announcements</div></div>
     <div class="stat"><div class="stat-n">∞</div><div class="stat-l">Smiles Spread</div></div>
   </div>
 
@@ -374,12 +375,14 @@
 
   // ── Stats ──
   async function loadStats() {
-    const [{ count: pc }, { data: evs }] = await Promise.all([
+    const [{ count: pc }, { data: evs }, { count: anns }] = await Promise.all([
       sb.from('photos').select('*', { count: 'exact', head: true }),
       sb.from('events').select('id'),
+      sb.from('announcements').select('*', { count: 'exact', head: true }),
     ]);
     document.getElementById('s-photos').textContent = pc ?? 0;
     document.getElementById('s-events').textContent = (evs || []).length;
+    document.getElementById('s-announcements').textContent = anns ?? 0;
   }
 
   // ── Gallery ──
