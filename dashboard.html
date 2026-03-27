@@ -311,6 +311,27 @@
   <div class="lb-cap" id="lb-cap" style="display:none;"></div>
 </div>
 
+<!-- Photo Edit Modal -->
+<div class="lb" id="edit-modal" onclick="if(event.target===this)closeEditModal()">
+  <button class="lb-x" onclick="closeEditModal()">✕</button>
+  <div style="background:var(--surface);border-radius:16px;padding:28px;max-width:500px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.4);animation:fadeUp 0.3s ease both;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--text);margin-bottom:20px;">Edit Photo</h2>
+    <div style="margin-bottom:18px;">
+      <img id="edit-preview" src="" style="width:100%;border-radius:12px;object-fit:cover;aspect-ratio:4/3;margin-bottom:12px;"/>
+      <label style="display:block;font-size:0.7rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:7px;">Replace Photo (optional)</label>
+      <input type="file" id="edit-file-input" accept="image/*" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:10px;background:var(--warm);font-family:'Quicksand',sans-serif;font-size:0.9rem;color:var(--text);outline:none;transition:border-color 0.18s;cursor:pointer;"/>
+    </div>
+    <div style="margin-bottom:18px;">
+      <label style="display:block;font-size:0.7rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:7px;">Caption</label>
+      <input id="edit-caption-input" type="text" style="width:100%;padding:11px 15px;border:1.5px solid var(--border);border-radius:10px;background:var(--warm);font-family:'Quicksand',sans-serif;font-size:0.9rem;color:var(--text);outline:none;transition:border-color 0.18s;" onkeydown="if(event.key==='Enter')savePhotoEdit()"/>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn" style="background:var(--warm);color:var(--text-3);box-shadow:none;" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="savePhotoEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -364,6 +385,9 @@
   // ── Gallery ──
   let queue = [];
   let allPhotos = [];
+  let editingPhotoId = null;
+  let editingPhotoOldUrl = null;
+  let editingPhotoNewFile = null;
 
   const uz = document.getElementById('uz');
   uz.addEventListener('dragover',  e => { e.preventDefault(); uz.classList.add('over'); });
@@ -463,7 +487,10 @@
         <div class="pc-img" onclick="openLb('${p.url}','${(p.caption || '').replace(/'/g, "\\'")}')">
           <img src="${p.url}" loading="lazy"/>
           <div class="pc-ov">
-            <button class="ov-del" onclick="event.stopPropagation();delPhoto(${p.id},'${extractFn(p.url)}')">Delete</button>
+            <div style="display:flex;gap:8px;">
+              <button class="ov-del" onclick="event.stopPropagation();openEditModal(${p.id},'${p.url}','${(p.caption || '').replace(/'/g, "\\'")}')">Edit</button>
+              <button class="ov-del" onclick="event.stopPropagation();delPhoto(${p.id},'${extractFn(p.url)}')">Delete</button>
+            </div>
           </div>
         </div>
         <div class="pc-meta">
@@ -486,6 +513,76 @@
     allPhotos = allPhotos.filter(p => p.id !== id);
     renderGallery(allPhotos);
     toast('Photo deleted', 'info');
+  }
+
+  function openEditModal(id, url, caption) {
+    editingPhotoId = id;
+    editingPhotoOldUrl = url;
+    editingPhotoNewFile = null;
+    document.getElementById('edit-preview').src = url;
+    document.getElementById('edit-caption-input').value = caption;
+    document.getElementById('edit-file-input').value = '';
+    document.getElementById('edit-modal').classList.add('open');
+  }
+
+  function closeEditModal() {
+    document.getElementById('edit-modal').classList.remove('open');
+    editingPhotoId = null;
+    editingPhotoOldUrl = null;
+    editingPhotoNewFile = null;
+  }
+
+  document.getElementById('edit-file-input')?.addEventListener('change', function(e) {
+    if (e.target.files && e.target.files[0]) {
+      editingPhotoNewFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        document.getElementById('edit-preview').src = evt.target.result;
+      };
+      reader.readAsDataURL(editingPhotoNewFile);
+    }
+  });
+
+  async function savePhotoEdit() {
+    if (!editingPhotoId) return;
+    const newCaption = document.getElementById('edit-caption-input').value.trim();
+    
+    try {
+      let newUrl = editingPhotoOldUrl;
+      
+      // If user uploaded a new file, replace it
+      if (editingPhotoNewFile) {
+        // Delete old file
+        await sb.storage.from(BUCKET).remove([extractFn(editingPhotoOldUrl)]);
+        
+        // Upload new file
+        const ext = editingPhotoNewFile.name.split('.').pop();
+        const newFileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const { error: uploadErr } = await sb.storage.from(BUCKET).upload(newFileName, editingPhotoNewFile, { 
+          cacheControl: '3600', 
+          contentType: editingPhotoNewFile.type, 
+          upsert: false 
+        });
+        if (uploadErr) { toast('Photo upload failed', 'error'); return; }
+        
+        const { data: ud } = sb.storage.from(BUCKET).getPublicUrl(newFileName);
+        newUrl = ud.publicUrl;
+      }
+      
+      // Update caption and/or URL
+      const { error } = await sb.from('photos').update({
+        caption: newCaption || null,
+        url: newUrl
+      }).eq('id', editingPhotoId);
+      
+      if (error) { toast('Update failed', 'error'); return; }
+      toast('✓ Photo updated!', 'success');
+      closeEditModal();
+      loadGallery();
+    } catch (err) {
+      toast('Error updating photo', 'error');
+      console.error(err);
+    }
   }
 
   function extractFn(url) { return url.split('/').pop(); }
