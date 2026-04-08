@@ -103,19 +103,25 @@
             box-shadow: 0 2px 8px rgba(255,139,123,0.4);
         }
 
-        .ann-content { flex: 1; }
+        .ann-content { flex: 1; min-width: 0; }
 
         .ann-title {
             font-family: 'Playfair Display', serif;
             font-size: 1.1rem;
             color: var(--warm-gray);
             margin-bottom: 0.4rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .ann-body {
             font-size: 0.92rem;
             line-height: 1.7;
             color: #8B7B7B;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .ann-date {
