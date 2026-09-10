@@ -281,9 +281,14 @@
 
 async function loadAnnouncements() {
     const list = document.getElementById('ann-list');
+    const cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - 2);
+    const cutoffIso = cutoff.toISOString();
+
     const { data, error } = await sb
         .from('announcements')
         .select('*')
+        .gte('created_at', cutoffIso)
         .order('pinned', { ascending: false })
         .order('created_at', { ascending: false });
 
